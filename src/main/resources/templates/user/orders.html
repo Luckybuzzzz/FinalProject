@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Заказы</title>
+</head>
+<body>
+<h3>Ваши заказы</h3>
+<!--получаем и итерируем orders от метода orderUser мейнКонтроллера-->
+<div th:each="order : ${orders}">
+  <h3 th:text="'Заказ №' + ${order.getOnumber()}"></h3>
+  <img th:src="'/img/' + ${order.getProduct().getImageList()[0].getFileName()}" width="300px">
+  <p th:text="'Наименование: ' + ${order.getProduct().getTitle()}">
+  <p th:text="'Количество: ' + ${order.getCount()}">
+  <p th:text="'Цена: ' + ${order.getPrice()}">
+<!--  #temporals.format позволяет отформатировать значение в то, которое указываем ('dd-MMM-yyyy')-->
+  <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
+  <p th:text="'Cтатус: ' + ${order.getStatus()}">
+</body>
+</html>

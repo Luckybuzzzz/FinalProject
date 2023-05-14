@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Информация о товаре</title>
+</head>
+<body>
+
+<!--Отображается при срабатывании метода infoProduct ProductController, который срабатывает
+при нажатии на ссылку в карточке товара на странице /product (где отображаются все товары-->
+
+<h3>Информация о товаре: </h3>
+<p th:text="'Наименование: ' + ${product.getTitle()}"></p>
+<p th:text="'Описание: ' + ${product.getDescription()}"></p>
+<p th:text="'Цена: ' + ${product.getPrice()}"></p>
+<p th:text="'Склад: ' + ${product.getWarehouse()}"></p>
+<p th:text="'Продавец: ' + ${product.getSeller()}"></p>
+<p th:text="'Категория: ' + ${product.getCategory().getTitle()}"></p>
+<!--Выводим фотографии товара - проходимся циклом по переданной модели, забираем из неё лист
+с фотографиями, у каждой фотографии получаем её fileName и по нему вытаскиваем её из хранилища
+(/img/ подменяется на путь, указанный в классе Config-->
+<div th:each="img : ${product.getImageList()}">
+  <img th:src="'/img/' + ${img.getFileName()}">
+</div>
+
+</body>
+</html>
