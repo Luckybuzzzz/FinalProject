@@ -10,6 +10,8 @@ import com.example.springsecurityapplication.services.PersonService;
 import com.example.springsecurityapplication.services.ProductService;
 import com.example.springsecurityapplication.util.PersonValidator;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,7 @@ public class MainController {
    private final CartRepository cartRepository;
 
     private final OrderRepostitory orderRepostitory;
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     public MainController(PersonValidator personValidator, PersonService personService, ProductService productService, ProductRepository productRepository, CartRepository cartRepository, OrderRepostitory orderRepostitory) {
         this.personValidator = personValidator;
@@ -79,60 +82,6 @@ public class MainController {
     public String infoProduct(@PathVariable("id") int id, Model model) {
         model.addAttribute("product", productService.getProductById(id));
         return "user/infoProduct";
-    }
-
-
-    @PostMapping("/person account/product/search")
-    public String productSearch(@RequestParam("search") String search,
-                                @RequestParam("ot") String ot,
-                                @RequestParam("do") String Do,
-                                @RequestParam(value = "price", required = false, defaultValue = "") String price,
-                                @RequestParam(value = "contract", required = false, defaultValue = "") String contract,
-                                Model model){
-        model.addAttribute("products", productService.getAllProduct());
-
-
-        if(!ot.isEmpty() & !Do.isEmpty()){
-            if(!price.isEmpty()){
-                if(price.equals("sorted_by_ascending_price")) {
-                    if (!contract.isEmpty()) {
-                        if (contract.equals("kkm")) {
-                            model.addAttribute("search_product", productRepository.findByTitleAndCategoryOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 1));
-                        } else if (contract.equals("printers")) {
-                            model.addAttribute("search_product", productRepository.findByTitleAndCategoryOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 2));
-                        } else if (contract.equals("scanners")) {
-                            model.addAttribute("search_product", productRepository.findByTitleAndCategoryOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 3));
-                        }
-                    } else {
-
-                        model.addAttribute("search_product", productRepository.findByTitleOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do)));
-                    }
-
-                } else if(price.equals("sorted_by_descending_price")){
-                    if(!contract.isEmpty()){ //если
-                        System.out.println(contract);
-                        if(contract.equals("kkm")){
-                            model.addAttribute("search_product", productRepository.findByTitleAndCategoryOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 1));
-                        }else if (contract.equals("printers")) {
-                            model.addAttribute("search_product", productRepository.findByTitleAndCategoryOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 2));
-                        } else if (contract.equals("scanners")) {
-                            model.addAttribute("search_product", productRepository.findByTitleAndCategoryOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 3));
-                        }
-                    }  else {
-                        model.addAttribute("search_product", productRepository.findByTitleOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do)));
-                    }
-                }
-            } else {
-                model.addAttribute("search_product", productRepository.findByTitleAndPriceGreaterThanEqualAndPriceLessThanEqual(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do)));
-            }
-        } else {
-            model.addAttribute("search_product", productRepository.findByTitleContainingIgnoreCase(search));
-        }
-
-        model.addAttribute("value_search",search);
-        model.addAttribute("value_price_ot",ot);
-        model.addAttribute("value_price_do",Do);
-        return "/product/product";
     }
 
 
