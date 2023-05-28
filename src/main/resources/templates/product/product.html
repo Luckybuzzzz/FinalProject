@@ -37,6 +37,10 @@
             <label for="printers">Принтеры чеков и этикеток</label>
             <input type="radio" id="scanners" name="contract" value="scanners">
             <label for="scanners">Сканнеры штрих-кодов</label>
+            <input type="radio" id="scales" name="contract" value="scales">
+            <label for="scales">Торговые весы</label>
+            <input type="radio" id="detectors" name="contract" value="detectors">
+            <label for="detectors">Детекторы валют</label>
             <br>
             <br>
             <input type="submit" value="Найти">
@@ -44,7 +48,12 @@
     </fieldset>
 </form>
 <hr>
+
 <h3>Результат поиска, сортировки, фильтрации</h3>
+<div th:each="filter: ${active_filters}">
+    <p th:text="${filter}"></p>
+</div>
+<hr>
 
 <div th:each="product: ${search_product}">
 

@@ -2,13 +2,14 @@ package com.example.springsecurityapplication.services;
 
 import com.example.springsecurityapplication.models.Product;
 import com.example.springsecurityapplication.repositories.ProductRepository;
+import com.example.springsecurityapplication.repositories.ProductsSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ProductSearchService implements ProductsService{
+public class ProductSearchService implements ProductsSearchRepository {
     @Autowired
     private final ProductRepository productRepository;
 
